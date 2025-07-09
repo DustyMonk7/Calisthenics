@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calisthenics Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f4f8;
+      color: #333;
+    }
+    header {
+      background: #008080;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      padding: 20px;
+    }
+    .week {
+      background: #fff;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    h2, h3 {
+      margin-top: 0;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .checkbox {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Beginner Calisthenics Program</h1>
+    <p>Fat Loss • Muscle Gain • 1-Year Progression</p>
+  </header>
+  <main id="program"></main>
+  <script>
+    const container = document.getElementById('program');
+    const startDate = new Date('2025-07-08');
+    const totalWeeks = 52;
+
+    const workouts = {
+      day1: ['Wall Push-Ups', 'Bodyweight Squats', 'Incline Plank', 'Seated Knee Raises', 'Wall Sits'],
+      day2: ['Standing Marching', 'Glute Bridges', 'Chair Squats', 'Bird-Dog', 'Knee Plank'],
+      day4: ['Incline Push-Ups', 'Wall Shoulder Taps', 'Standing Broomstick Rows', 'Bent Leg Raises', 'Seated Arm Circles'],
+      day5: ['Brisk Walk 20 mins', 'Low-impact Jumping Jacks', 'Chair Marches', 'Plank Hold']
+    };
+
+    for (let week = 1; week <= totalWeeks; week++) {
+      const weekDiv = document.createElement('div');
+      weekDiv.className = 'week';
+      weekDiv.innerHTML = `<h2>Week ${week}</h2>`;
+
+      ['Day 1', 'Day 2', 'Day 4', 'Day 5'].forEach((day, idx) => {
+        const ul = document.createElement('ul');
+        const key = `day${idx === 0 ? 1 : idx === 1 ? 2 : idx === 2 ? 4 : 5}`;
+        workouts[key].forEach((ex, exIndex) => {
+          const reps = 10 + Math.min(week - 1, 10);
+          const li = document.createElement('li');
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'checkbox';
+          checkbox.id = `w${week}-d${day}-ex${exIndex}`;
+
+          const label = document.createElement('label');
+          label.htmlFor = checkbox.id;
+          label.textContent = `${ex} – ${reps} reps`;
+
+          li.appendChild(checkbox);
+          li.appendChild(label);
+          ul.appendChild(li);
+        });
+        const daySection = document.createElement('div');
+        daySection.innerHTML = `<h3>${day}</h3>`;
+        daySection.appendChild(ul);
+        weekDiv.appendChild(daySection);
+      });
+
+      container.appendChild(weekDiv);
+    }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('serviceWorker.js')
+        .then(reg => console.log('Service Worker registered:', reg))
+        .catch(err => console.error('SW registration failed:', err));
+    }
+  </script>
+</body>
+</html>
